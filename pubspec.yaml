@@ -1,8 +1,8 @@
 name: github_calendar
-description: A new Flutter package project.
+description: A Widget to show calendar like github repo.
 version: 0.0.1
-author:
-homepage:
+author: Paper Huang<paperhs901230@gmail.com>
+homepage: https://github.com/PaperHS/Flutter-GithubCalendar
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
