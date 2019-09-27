@@ -1,9 +1,10 @@
 library github_calendar;
+
 import 'package:flutter/widgets.dart';
 
 ///
 class GithubCalendar extends StatelessWidget {
-  GithubCalendar({Key key, this.color,this.degresses}) : super(key: key);
+  GithubCalendar({Key key, this.color, this.degresses}) : super(key: key);
   final List<int> degresses;
   final Color color;
   static const months = [
@@ -20,7 +21,6 @@ class GithubCalendar extends StatelessWidget {
     "Nov",
     "Dec"
   ];
-  
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +116,7 @@ class SquareWall extends StatelessWidget {
           mainAxisSpacing: 1,
           crossAxisCount: 7,
           children: List.generate(days, (index) {
-            var curColor = (index >= deeps.length|| deeps[index] == 0)
+            var curColor = (index >= deeps.length || deeps[index] == 0)
                 ? Color.fromARGB(255, 235, 237, 240)
                 : Color.fromARGB(
                     deeps[index] * 51, color.red, color.green, color.blue);
