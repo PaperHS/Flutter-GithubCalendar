@@ -1,34 +1,45 @@
 library github_calendar;
 
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 
 /// Creates a Calendar heatmap
+/// The total height is 70 (calendar) + 15
 class GithubCalendar extends StatelessWidget {
   const GithubCalendar({
     Key key,
     @required this.color,
-    @required this.degresses,
+    @required this.data,
     this.initialColor = const Color.fromARGB(255, 235, 237, 240),
+    this.boxSize = 9,
+    this.boxPadding = 2,
     // this.width,
     this.height = 70,
     this.style = const TextStyle(),
   })  : assert(color != null),
         assert(initialColor != null),
-        assert(degresses != null),
+        assert(data != null),
         super(key: key);
 
   /// The second [Color] containing a max density
   final Color color;
 
-  /// The density (displayed via color) in each box from `0-1`
-  final List<double> degresses;
+  /// The density (displayed via color) in each box
+  final List<int> data;
 
   /// The initial `cold` value, or the [Color] of a box without density
   final Color initialColor;
 
+  final double boxPadding;
+
+  final double boxSize;
+
   final double height;
   // final double width;
   final TextStyle style;
+
+  final _monthsHeight = 15.0;
 
   final _months = const [
     'Jan',
@@ -42,11 +53,12 @@ class GithubCalendar extends StatelessWidget {
     'Sep',
     'Oct',
     'Nov',
-    'Dec'
+    'Dec',
   ];
 
   @override
   Widget build(BuildContext context) {
+    final boxSizeAndPadding = boxSize + boxPadding;
     final now = DateTime.now();
     final days = now.weekday + 52 * 7;
     final dr = Duration(days: days);
@@ -74,19 +86,37 @@ class GithubCalendar extends StatelessWidget {
       readOnly: true,
       label: 'Activity heat map',
       child: DefaultTextStyle(
-        style: style.copyWith(fontSize: 10),
+        style: style,
         child: Row(
           children: <Widget>[
             Container(
               width: 25,
               child: Column(
-                children: const <Widget>[
-                  SizedBox(height: 10),
-                  Text('Sun'),
-                  SizedBox(height: 20),
-                  Text('Thr'),
-                  SizedBox(height: 16),
-                  Text('Sat'),
+                children: <Widget>[
+                  SizedBox(height: _monthsHeight),
+                  SizedBox(
+                    height: boxSizeAndPadding,
+                    child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Text('Sun'),
+                    ),
+                  ),
+                  SizedBox(height: boxSizeAndPadding * 2),
+                  SizedBox(
+                    height: boxSizeAndPadding,
+                    child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Text('Thr'),
+                    ),
+                  ),
+                  SizedBox(height: boxSizeAndPadding * 2),
+                  SizedBox(
+                    height: boxSizeAndPadding,
+                    child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Text('Sat'),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -103,7 +133,7 @@ class GithubCalendar extends StatelessWidget {
 
                         return Container(
                           alignment: Alignment.centerLeft,
-                          height: 15,
+                          height: _monthsHeight,
                           width: width.toDouble(),
                           child: Text(_months[m]),
                         );
@@ -115,8 +145,11 @@ class GithubCalendar extends StatelessWidget {
                     child: SquareWall(
                       color: color,
                       initialColor: initialColor,
+                      boxSize: boxSize,
                       days: days,
-                      degresses: degresses,
+                      data: data,
+                      max: data.reduce(max),
+                      boxPadding: boxPadding,
                     ),
                   ),
                 ],
@@ -134,40 +167,46 @@ class SquareWall extends StatelessWidget {
     Key key,
     @required this.days,
     @required this.initialColor,
+    @required this.boxSize,
+    @required this.boxPadding,
     @required this.color,
-    @required this.degresses,
+    @required this.data,
+    @required this.max,
   })  : assert(days != null),
         assert(color != null),
-        assert(degresses != null),
+        assert(initialColor != null),
+        assert(boxSize != null),
+        assert(boxPadding != null),
+        assert(data != null),
+        assert(max != null),
         super(key: key);
 
   final int days;
   final Color initialColor;
+  final double boxSize;
+  final double boxPadding;
   final Color color;
-  final List<double> degresses;
+  final List<int> data;
+  final int max;
 
   @override
   Widget build(BuildContext context) {
     return GridView.count(
       scrollDirection: Axis.horizontal,
-      crossAxisSpacing: 1,
-      mainAxisSpacing: 1,
+      crossAxisSpacing: boxPadding,
+      mainAxisSpacing: boxPadding,
       crossAxisCount: 7,
       children: List.generate(
         days,
         (index) {
-          final curColor = (index >= degresses.length || degresses[index] == 0)
+          final curColor = index >= data.length
               ? initialColor
-              : Color.lerp(initialColor, color, degresses[index]);
+              : Color.lerp(initialColor, color, data[index] / max);
 
           return Container(
-            width: 9,
-            height: 9,
-            decoration: BoxDecoration(color: curColor),
-            child: const SizedBox(
-              height: 1,
-              width: 1,
-            ),
+            width: boxSize,
+            height: boxSize,
+            color: curColor,
           );
         },
       ),
