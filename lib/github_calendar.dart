@@ -3,8 +3,8 @@ library github_calendar;
 import 'package:flutter/widgets.dart';
 
 /// Creates a Calendar heatmap
-class CustomGithubCalendar extends StatelessWidget {
-  const CustomGithubCalendar({
+class GithubCalendar extends StatelessWidget {
+  const GithubCalendar({
     Key key,
     @required this.color,
     @required this.degresses,
