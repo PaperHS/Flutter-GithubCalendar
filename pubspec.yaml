@@ -2,8 +2,7 @@ name: github_calendar
 description: A calendar view like github repo contributions. 
   It is a stateless widget, and help you to create a thermodynamic chart
   that show your users' activities.
-version: 0.1.0
-author: Paper Huang<paperhs901230@gmail.com>
+version: 0.1.1
 homepage: https://github.com/PaperHS/Flutter-GithubCalendar
 
 environment:
