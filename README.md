@@ -7,7 +7,7 @@ A calendar view like github repo contributions.
 ## Getting Started
 
 ```yml
-   github_calendar: ^0.0.1
+   github_calendar: ^0.0.2
 ```
 
 ## Usage
@@ -17,7 +17,7 @@ Container(
   height: 200,
   child: GithubCalendar(
     color: Colors.pink,
-    degresses: List.generate(371, (index){
+    data: List.generate(371, (index){
       return Random().nextInt(5);
       }),
     )

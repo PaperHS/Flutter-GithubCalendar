@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
           height: 200,
           child: GithubCalendar(
             color: Colors.pink,
-            degresses: List.generate(371, (index) {
+            data: List.generate(371, (index) {
               return Random().nextInt(5);
             }),
           )),

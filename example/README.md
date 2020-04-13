@@ -7,7 +7,7 @@ Github_Calendar Widget Demo.
 ```dart
 Container(
             height: 200,
-            child: GithubCalendar(color: Colors.pink,degresses: List.generate(371,
+            child: GithubCalendar(color: Colors.pink, data: List.generate(371,
                     (index){return Random().nextInt(5);}),)
           ),
 ```
